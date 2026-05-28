@@ -1,0 +1,28 @@
+﻿<Window x:Class="ChatBotGui.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatBotGui"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="450" Background="Azure">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Header Area -->
+            <RowDefinition Height="Auto"/>
+            <!-- Scrollable Chat Output Area -->
+            <RowDefinition Height="Auto"/>
+            <!-- Input Controller Area -->
+        </Grid.RowDefinitions>
+
+        <!-- Row 0: Application Header and ASCII Canvas area -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Text="[ SECURE_BOT v2.0 ]" FontSize="18" Foreground="Cyan" HorizontalAlignment="Center" FontWeight="Bold"/>
+            <TextBlock x:Name="tbAsciiCanvas" FontFamily="Consolas" FontSize="8" Foreground="SkyBlue" HorizontalAlignment="Center" Margin="5"/>
+        </StackPanel>
+
+
+
+    </Grid>
+</Window>
