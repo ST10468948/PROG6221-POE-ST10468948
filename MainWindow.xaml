@@ -6,40 +6,33 @@
         xmlns:local="clr-namespace:ChatBotGui"
         mc:Ignorable="d"
         Title="Cybersecurity Awareness Assistant" Height="600" Width="450" Background="Azure">
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Header Area -->
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <!-- Scrollable Chat Output Area -->
-            <RowDefinition Height="Auto"/>
-            <!-- Input Controller Area -->
         </Grid.RowDefinitions>
 
-        <!-- Row 0: Application Header and ASCII Canvas area -->
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="[ SECURE_BOT v2.0 ]" FontSize="18" Foreground="Cyan" HorizontalAlignment="Center" FontWeight="Bold"/>
+            <TextBlock Text="[ Awareness Assistant v2.0 ]" FontSize="18" Foreground="Cyan" HorizontalAlignment="Center" FontWeight="Bold"/>
             <TextBlock x:Name="tbAsciiCanvas" FontFamily="Consolas" FontSize="8" Foreground="SkyBlue" HorizontalAlignment="Center" Margin="5"/>
         </StackPanel>
 
-        <!-- Row 1: Chat Display Window View Wrapper -->
         <ScrollViewer x:Name="chatScroller" Grid.Row="1" Background="DarkSlateBlue" VerticalScrollBarVisibility="Auto" Margin="0,5">
             <TextBlock x:Name="tbChatDisplay" Padding="10" Foreground="White" FontSize="13" TextWrapping="Wrap" FontFamily="Segoe UI"/>
         </ScrollViewer>
 
-        <!-- Row 2: Bottom Entry Interaction Deck -->
         <Grid Grid.Row="2" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="txtUserInput" Grid.Column="0" Height="35" Background="DarkSlateBlue" Foreground="White" BorderBrush="Aqua" 
+                 VerticalContentAlignment="Center" Padding="5" KeyDown="TxtUserInput_KeyDown" FontSize="13"/>
+
+            <Button x:Name="btnSend" Content="SEND" Grid.Column="1" Width="80" Margin="5,0,0,0" Background="Azure" 
+                Foreground="DarkSlateBlue" FontWeight="Bold" Click="BtnSend_Click"/>
         </Grid>
-
-        <TextBox x:Name="txtUserInput" Grid.Column="0" Height="35" Background="DarkSlateBlue" Foreground="White" BorderBrush="Aqua" 
-                     VerticalContentAlignment="Center" Padding="5" KeyDown="TxtUserInput_KeyDown" FontSize="13"/>
-
-        <Button x:Name="btnSend" Content="SEND" Grid.Column="1" Width="80" Margin="5,0,0,0" Background="Azure" 
-                    Foreground="DarkSlateBlue" FontWeight="Bold" Click="BtnSend_Click"/>
-
     </Grid>
 </Window>
