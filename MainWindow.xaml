@@ -7,30 +7,42 @@
         mc:Ignorable="d"
         Title="Cybersecurity Awareness Assistant" Height="600" Width="450" Background="Azure">
     <Grid Margin="10">
+
+        <!-- Defines 3 rows for the main layout -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- Header section -->
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
+
+            <!-- App title -->
             <TextBlock Text="[ Awareness Assistant v2.0 ]" FontSize="18" Foreground="Cyan" HorizontalAlignment="Center" FontWeight="Bold"/>
+
+            <!-- Displays ASCII art/logo -->
             <TextBlock x:Name="tbAsciiCanvas" FontFamily="Consolas" FontSize="8" Foreground="SkyBlue" HorizontalAlignment="Center" Margin="5"/>
         </StackPanel>
+
+        <!-- Scrollable chat display area -->
 
         <ScrollViewer x:Name="chatScroller" Grid.Row="1" Background="DarkSlateBlue" VerticalScrollBarVisibility="Auto" Margin="0,5">
             <TextBlock x:Name="tbChatDisplay" Padding="10" Foreground="White" FontSize="13" TextWrapping="Wrap" FontFamily="Segoe UI"/>
         </ScrollViewer>
 
+        <!-- Bottom input section -->
         <Grid Grid.Row="2" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
+            <!-- User input textbox -->
             <TextBox x:Name="txtUserInput" Grid.Column="0" Height="35" Background="DarkSlateBlue" Foreground="White" BorderBrush="Aqua" 
                  VerticalContentAlignment="Center" Padding="5" KeyDown="TxtUserInput_KeyDown" FontSize="13"/>
 
+            <!-- Send button -->
             <Button x:Name="btnSend" Content="SEND" Grid.Column="1" Width="80" Margin="5,0,0,0" Background="Azure" 
                 Foreground="DarkSlateBlue" FontWeight="Bold" Click="BtnSend_Click"/>
         </Grid>
