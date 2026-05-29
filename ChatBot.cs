@@ -96,3 +96,4 @@ namespace ChatBotGui
             return "Bot: I didn't quite catch the specifics of that query. Could you please rephrase or try mentioning passwords, scams, or phishing?";
         }
     }
+}
