@@ -43,6 +43,9 @@ namespace ChatBotGui
             // Load the first quiz question onto the screen automatically on launch
             DisplayNextQuestion();
 
+            // Refresh and show any startup actions in our Activity Log tab view
+            UpdateLogDisplay();
+
             // Show the bot's first message (asking for name) in the chat box 
             tbChatDisplay.Text += botProcessor.GetGreeting() + "\n\n";
         }
@@ -108,6 +111,9 @@ namespace ChatBotGui
             // Show the bot's response and scroll to the newest message 
             tbChatDisplay.Text += $"{cleanResponse}\n\n";
             chatScroller.ScrollToBottom();
+
+            // Automatically refresh our log view tab since processing inputs generates new log history entries
+            UpdateLogDisplay();
         }
 
         // Runs the message cycle when the SEND button is clicked 
@@ -161,6 +167,9 @@ namespace ChatBotGui
             // Force the DataGrid view interface component to fetch latest entries 
             RefreshTasksGrid();
 
+            // Refresh our log display since creating a new task adds a row entry to our tracking file
+            UpdateLogDisplay();
+
             // Render an informative confirmation message layout alert window
             MessageBox.Show(successPrompt, "Operation Successful", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -178,6 +187,9 @@ namespace ChatBotGui
 
                 // Refresh the visible display grid layout table view immediately 
                 RefreshTasksGrid();
+
+                // Refresh our log tab view window
+                UpdateLogDisplay();
             }
             else
             {
@@ -198,6 +210,9 @@ namespace ChatBotGui
 
                 // Re-read storage logs and adjust the visual components dynamically 
                 RefreshTasksGrid();
+
+                // Refresh our log tab view window
+                UpdateLogDisplay();
             }
             else
             {
@@ -205,11 +220,7 @@ namespace ChatBotGui
             }
         }
 
-        // =========================================================================
-        // CYBER QUIZ FRONTEND WIRING METHODS
-        // =========================================================================
-
-        // Pulls the current active question details from the quiz engine and displays them on screen
+            // Pulls the current active question details from the quiz engine and displays them on screen
         private void DisplayNextQuestion()
         {
             // Uncheck all answer choice radio options to start fresh
@@ -267,6 +278,7 @@ namespace ChatBotGui
             if (quizEngine.GetScore() == 0 && quizEngine.IsFinished() == false)
             {
                 ActivityLogger.Log("Quiz started");
+                UpdateLogDisplay(); // Sync log display immediately
             }
 
             // Hide the question options container pane to prevent accidental duplicate submission entries
@@ -315,6 +327,7 @@ namespace ChatBotGui
 
                 // Add an entry to our activity log history when the quiz is fully completed
                 ActivityLogger.Log($"Quiz completed - score: {quizEngine.GetScore()} out of {quizEngine.GetTotalQuestions()}");
+                UpdateLogDisplay();
             }
             else
             {
@@ -335,9 +348,32 @@ namespace ChatBotGui
 
             // Add an entry to our activity log history when the quiz is restarted
             ActivityLogger.Log("Quiz restarted");
+            UpdateLogDisplay();
 
             // Redraw question tracking interfaces securely
             DisplayNextQuestion();
+        }
+
+      
+        // Helper method that asks the Logger class for the last 10 actions and outputs it to the tab textbox
+        private void UpdateLogDisplay()
+        {
+            // Ask ActivityLogger to pull the short, limited (10 actions) overview string block
+            TxtLogDisplay.Text = ActivityLogger.GetRecentLog(10);
+        }
+
+        // Action handler triggered when the user clicks the "Refresh Log" button
+        private void BtnRefreshLog_Click(object sender, RoutedEventArgs e)
+        {
+            // Manually force a redraw check of the log entries textbox
+            UpdateLogDisplay();
+        }
+
+        // Action handler triggered when the user clicks the "Show More History" button
+        private void BtnShowMoreLog_Click(object sender, RoutedEventArgs e)
+        {
+            // Overwrite the textbox content using the absolute full history tracking ledger string block
+            TxtLogDisplay.Text = ActivityLogger.GetFullLog();
         }
     }
 }

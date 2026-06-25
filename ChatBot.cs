@@ -5,114 +5,115 @@ namespace ChatBotGui
 {
     public class ChatBot
     {
-        // These link the other parts of our program
+        // Global variables to link our other helper class logic modules to this engine
         private KeywordResponder keywords;
         private SentimentDetector sentiment;
         private MemoryStore memory;
-
-        // Connect our chatbot engine directly to our task manager logic class
         private TaskManager taskEngine;
 
-        // These keep track of the conversation state
+        // Status variables tracking where we are inside the active conversation flow
         private bool awaitingName = true;
         private string lastTopic = "";
 
+        // Constructor method that sets up the sub-components when the bot is first created
         public ChatBot()
         {
-            // Set up all the tools the bot needs when it is first created
             keywords = new KeywordResponder();
             sentiment = new SentimentDetector();
             memory = new MemoryStore();
-            taskEngine = new TaskManager(); // Initialize our task engine layer
+            taskEngine = new TaskManager();
         }
 
+        // Returns the initial welcoming greeting text to display when the application boots
         public string GetGreeting()
         {
             return "Bot: Hello! Welcome to the Cybersecurity Awareness Bot. What is your full name?";
         }
 
+        // The central processing engine method that evaluates text strings typed by users
         public string ProcessInput(string input)
         {
-            // Check if the user sent an empty message
+            // Stop processing and return a message if the user types absolutely nothing or blank spaces
             if (string.IsNullOrWhiteSpace(input))
             {
                 return "Bot: I didn't catch that. Please type a message or ask a question!";
             }
 
-            // STEP 1: If we don't have the user's name yet, save it first
+            // Check if this is the very first loop interaction where we explicitly expect their name
             if (awaitingName)
             {
+                // Save the typed value into our profile memory tool
                 memory.Store("name", input);
+
+                // Flip the status flag to false so we skip this registration loop block next time
                 awaitingName = false;
+
                 return $"Bot: Nice to meet you, {memory.UserName}! You can ask me about 'passwords', 'phishing', 'privacy', or 'scams'. What's on your mind today?";
             }
 
+            // Flatten the input text string to lowercase to prevent matching errors caused by casing variations
             string cleanInput = input.ToLower();
 
-            // =========================================================================
-            // NEW TASK 3: SIMULATED NLP INTENT DETECTION INTERCEPTORS
-            // =========================================================================
-
-            // 1. NLP Check: Detect if user wants to add a task from varied phrasing
+            // Check our keywords helper to see if the user's sentence matches a task addition intent phrase
             if (keywords.IsAddTaskIntent(cleanInput))
             {
                 string extractedTitle = "New Cyber Task";
 
-                // Extract the task name context by cutting out the trigger phrases
+                // Strip away the matching command phrase prefix from the sentence to isolate the task text content
                 if (cleanInput.Contains("add task")) extractedTitle = input.Replace("add task", "").Replace("Add task", "").Trim();
                 else if (cleanInput.Contains("add a task")) extractedTitle = input.Replace("add a task", "").Replace("Add a task", "").Trim();
                 else if (cleanInput.Contains("create task")) extractedTitle = input.Replace("create task", "").Replace("Create task", "").Trim();
                 else extractedTitle = input.Trim();
 
-                // Clean up any stray symbols or periods at the end of their sentence
+                // Trim trailing periods, spaces, or exclamation marks from the isolated task title text string
                 extractedTitle = extractedTitle.Trim(new char[] { ' ', '.', ',', '!', ':' });
 
-                // Add the task automatically through our storage engine system
+                // Call our task business logic system layer to write this new row directly to the JSON document
                 taskEngine.AddTask(extractedTitle, "Task created via conversational chatbot command input row.", "No reminder set");
 
-                // Log this NLP action to our running Activity Logger class
+                // Note this exact text translation match directly inside our running system activity logs
                 ActivityLogger.Log($"NLP recognized task intent from input: '{input}'");
 
                 return $"Bot: Task added: '{extractedTitle}'. Would you like to set a reminder for this task?";
             }
 
-            // 2. NLP Check: Detect if user wants to view the activity log
+            // Check our keywords helper to see if the user's sentence matches an activity log viewing request
             if (keywords.IsShowLogIntent(cleanInput))
             {
+                // Record the log viewing event inside the history ledger list
                 ActivityLogger.Log("NLP recognized activity log request trigger statement.");
-                // Return the formatted text block containing recent entries directly to the chat
+
+                // Return the 10 most recent numbered history entry strings directly back to the chat viewer layout
                 return ActivityLogger.GetRecentLog(10);
             }
 
-            // Extra NLP Check: Catch 'show more' requests inside the chat window
+            // Intercept special extra commands matching requests to view hidden historic tracking items
             if (cleanInput.Contains("show more"))
             {
                 return ActivityLogger.GetFullLog();
             }
 
-            // 3. NLP Check: Detect if user wants to open the quiz game via conversation shortcuts
+            // Check our keywords helper to see if the user's sentence matches a quiz invocation shortcut statement
             if (keywords.IsStartQuizIntent(cleanInput))
             {
                 ActivityLogger.Log("NLP recognized shortcut quiz request trigger statement.");
                 return "Bot: Let's test your skills! Click on the 'Cyber Quiz' tab at the top of the screen right now to play our interactive mini-game.";
             }
 
-            // =========================================================================
-            // ORIGINAL FEATURES (Conversation Flow, Sentiment, & Keyword Processing)
-            // =========================================================================
-
-            // STEP 2: Check if the user is asking for more info on the previous topic
+            // Check if the user is asking a conversational follow-up question regarding the last discussed topic
             if (cleanInput.Contains("tell me more") || cleanInput.Contains("explain more") || cleanInput.Contains("another tip"))
             {
+                // Verify that we actually have a valid previous topic stored in our loop tracker history
                 if (!string.IsNullOrEmpty(lastTopic))
                 {
+                    // Fetch an alternative random tip string using the previously matching dictionary key string
                     string followUpTip = keywords.GetResponse(lastTopic, out _);
                     return $"Bot: Sure! Here is more insight regarding {lastTopic}: {followUpTip}";
                 }
                 return "Bot: What specific cybersecurity topic would you like me to elaborate on first?";
             }
 
-            // STEP 3: Simple "Small Talk" check
+            // Handle casual small talk input variations to keep interactions feeling organic
             if (cleanInput.Contains("how are you"))
             {
                 return $"Bot: I am functioning perfectly, thanks for checking in, {memory.UserName}! Ready to clean up cyber threats.";
@@ -122,31 +123,35 @@ namespace ChatBotGui
                 return "Bot: My objective is to educate South African citizens on identifying and avoiding common cyber risks.";
             }
 
-            // STEP 4: Analyze the user's mood (Sentiment)
+            // Pass the input string parameter to our mood tracking detector class to evaluate user emotions
             Sentiment detectedMood = sentiment.Detect(input);
             string moodOpener = sentiment.GetSentimentResponse(detectedMood);
 
-            // STEP 5: Search for security keywords (passwords, scams, etc.)
+            // Pass the input sentence string to our security keyword checker to extract matching response strings
             string matchedKey;
             string coreTip = keywords.GetResponse(input, out matchedKey);
 
+            // Verify that a valid text string payload was found and retrieved from the dictionary asset collection
             if (!string.IsNullOrEmpty(coreTip))
             {
+                // If they phrase an explicit long-term affinity, pass the metric value to store it inside memory
                 if (cleanInput.Contains("interested in") || cleanInput.Contains("favorite topic is"))
                 {
                     memory.Store("topic", matchedKey);
                 }
 
+                // Retrieve custom profile response prefix parameters and update our last topic pointer tracker variable
                 string personalizedPrefix = memory.GetPersonalisedOpener();
                 lastTopic = matchedKey;
 
-                // Log that a standard keyword tip match was delivered successfully
+                // Document the matching dictionary tip event directly inside our history list records
                 ActivityLogger.Log($"Keyword matched: {matchedKey} - response delivered");
 
+                // Combine the localized emotional opener, custom profile prefix, and the random educational safety tip
                 return $"Bot: {moodOpener}{personalizedPrefix}{coreTip}";
             }
 
-            // STEP 6: Default fallback if the bot completely misses intent phrasings
+            // Fallback response if the clean string value fails to trigger any matching rules or text dictionary tags
             return "Bot: I didn't quite catch the specifics of that query. Could you please rephrase or try mentioning passwords, scams, or phishing?";
         }
     }

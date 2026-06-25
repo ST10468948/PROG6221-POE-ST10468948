@@ -134,6 +134,37 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+
+            <TabItem Header="Activity Log" FontSize="14" Padding="10,5">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="System Actions Ledger" FontSize="16" FontWeight="Bold" Foreground="#1F2937" Margin="0,0,0,5"/>
+                    <TextBlock Grid.Row="1" Text="Monitors chatbot interactions, quiz completions, and task operations with strict system timestamps." FontSize="12" Foreground="#6B7280" TextWrapping="Wrap" Margin="0,0,0,15"/>
+
+                    <ScrollViewer Grid.Row="2" Background="#F9FAFB" BorderBrush="#D1D5DB" BorderThickness="1" VerticalScrollBarVisibility="Auto">
+                        <TextBlock x:Name="TxtLogDisplay" Padding="10" Text="No actions logged yet." FontSize="13" Foreground="#374151" TextWrapping="Wrap" FontFamily="Consolas"/>
+                    </ScrollViewer>
+
+                    <Grid Grid.Row="3" Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="BtnRefreshLog" Grid.Column="0" Content="Refresh Log" Width="110" Height="35" Background="#2563EB" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnRefreshLog_Click"/>
+
+                        <Button x:Name="BtnShowMoreLog" Grid.Column="2" Content="Show More History" Width="150" Height="35" Background="#4B5563" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnShowMoreLog_Click"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
         </TabControl>
     </Grid>
 </Window>
