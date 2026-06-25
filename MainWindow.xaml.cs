@@ -263,6 +263,12 @@ namespace ChatBotGui
                 return;
             }
 
+            // If this is the very first question being submitted, log that the quiz attempt has officially started
+            if (quizEngine.GetScore() == 0 && quizEngine.IsFinished() == false)
+            {
+                ActivityLogger.Log("Quiz started");
+            }
+
             // Hide the question options container pane to prevent accidental duplicate submission entries
             PnlQuizActive.Visibility = Visibility.Collapsed;
 
@@ -306,6 +312,9 @@ namespace ChatBotGui
                 TxtFinalScoreReport.Text = $"You scored {quizEngine.GetScore()} out of {quizEngine.GetTotalQuestions()} questions correctly.";
                 TxtFinalFeedbackMsg.Text = quizEngine.GetFinalMessage();
                 PnlQuizResults.Visibility = Visibility.Visible;
+
+                // Add an entry to our activity log history when the quiz is fully completed
+                ActivityLogger.Log($"Quiz completed - score: {quizEngine.GetScore()} out of {quizEngine.GetTotalQuestions()}");
             }
             else
             {
@@ -323,6 +332,9 @@ namespace ChatBotGui
             // Sync dashboard summary data parameters
             LblLiveScore.Text = $"0/{quizEngine.GetTotalQuestions()}";
             PnlQuizResults.Visibility = Visibility.Collapsed;
+
+            // Add an entry to our activity log history when the quiz is restarted
+            ActivityLogger.Log("Quiz restarted");
 
             // Redraw question tracking interfaces securely
             DisplayNextQuestion();

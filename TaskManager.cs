@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using CybersecurityChatbot;
 using System;
 using System.Collections.Generic;
 
-namespace CybersecurityChatbot
+namespace ChatBotGui
 {
     // This class handles the business logic for managing tasks, acting as a bridge between the GUI and storage
     public class TaskManager
@@ -25,6 +23,9 @@ namespace CybersecurityChatbot
             // Pass the details to our storage helper so it can save the new task into the JSON file
             _storage.AddTask(title, description, reminder);
 
+            // Add an entry to our activity log history when a task is successfully created
+            ActivityLogger.Log($"Task added: '{title}' (Reminder set for {reminder})");
+
             // Return a friendly confirmation message text back to the user interface
             return $"Task added successfully with the description '{description}'.";
         }
@@ -41,6 +42,9 @@ namespace CybersecurityChatbot
         {
             // Tell the storage helper to find this specific ID and change its completed status to true
             _storage.MarkAsComplete(id);
+
+            // Add an entry to our activity log history when a task is updated to done
+            ActivityLogger.Log($"Task marked complete (ID: {id})");
         }
 
         // Method to completely remove a task from our system using its unique ID number
@@ -48,6 +52,9 @@ namespace CybersecurityChatbot
         {
             // Tell the storage helper to find this specific ID and wipe it out of the JSON file
             _storage.DeleteTask(id);
+
+            // Add an entry to our activity log history when a task is deleted
+            ActivityLogger.Log($"Task deleted (ID: {id})");
         }
     }
 }
