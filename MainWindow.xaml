@@ -6,45 +6,89 @@
         xmlns:local="clr-namespace:ChatBotGui"
         mc:Ignorable="d"
         Title="Cybersecurity Awareness Assistant" Height="600" Width="450" Background="Azure">
-    <Grid Margin="10">
+    <Grid>
+        <TabControl Background="White" BorderBrush="#D1D5DB" Margin="10">
 
-        <!-- Defines 3 rows for the main layout -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+            <TabItem Header="Chatbot Assistant" FontSize="14" Padding="10,5">
+                <Grid Margin="10">
 
-        <!-- Header section -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-            <!-- App title -->
-            <TextBlock Text="[ Awareness Assistant v2.0 ]" FontSize="18" Foreground="Cyan" HorizontalAlignment="Center" FontWeight="Bold"/>
+                    <StackPanel Grid.Row="0" Margin="0,0,0,10">
 
-            <!-- Displays ASCII art/logo -->
-            <TextBlock x:Name="tbAsciiCanvas" FontFamily="Consolas" FontSize="8" Foreground="SkyBlue" HorizontalAlignment="Center" Margin="5"/>
-        </StackPanel>
+                        <TextBlock Text="[ Awareness Assistant v2.0 ]" FontSize="18" Foreground="Cyan" HorizontalAlignment="Center" FontWeight="Bold"/>
 
-        <!-- Scrollable chat display area -->
+                        <TextBlock x:Name="tbAsciiCanvas" FontFamily="Consolas" FontSize="8" Foreground="SkyBlue" HorizontalAlignment="Center" Margin="5"/>
+                    </StackPanel>
 
-        <ScrollViewer x:Name="chatScroller" Grid.Row="1" Background="DarkSlateBlue" VerticalScrollBarVisibility="Auto" Margin="0,5">
-            <TextBlock x:Name="tbChatDisplay" Padding="10" Foreground="White" FontSize="13" TextWrapping="Wrap" FontFamily="Segoe UI"/>
-        </ScrollViewer>
+                    <ScrollViewer x:Name="chatScroller" Grid.Row="1" Background="DarkSlateBlue" VerticalScrollBarVisibility="Auto" Margin="0,5">
+                        <TextBlock x:Name="tbChatDisplay" Padding="10" Foreground="White" FontSize="13" TextWrapping="Wrap" FontFamily="Segoe UI"/>
+                    </ScrollViewer>
 
-        <!-- Bottom input section -->
-        <Grid Grid.Row="2" Margin="0,10,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="2" Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-            <!-- User input textbox -->
-            <TextBox x:Name="txtUserInput" Grid.Column="0" Height="35" Background="DarkSlateBlue" Foreground="White" BorderBrush="Aqua" 
-                 VerticalContentAlignment="Center" Padding="5" KeyDown="TxtUserInput_KeyDown" FontSize="13"/>
+                        <TextBox x:Name="txtUserInput" Grid.Column="0" Height="35" Background="DarkSlateBlue" Foreground="White" BorderBrush="Aqua" 
+                                 VerticalContentAlignment="Center" Padding="5" KeyDown="TxtUserInput_KeyDown" FontSize="13"/>
 
-            <!-- Send button -->
-            <Button x:Name="btnSend" Content="SEND" Grid.Column="1" Width="80" Margin="5,0,0,0" Background="Azure" 
-                Foreground="DarkSlateBlue" FontWeight="Bold" Click="BtnSend_Click"/>
-        </Grid>
+                        <Button x:Name="btnSend" Content="SEND" Grid.Column="1" Width="80" Margin="5,0,0,0" Background="Azure" 
+                                Foreground="DarkSlateBlue" FontWeight="Bold" Click="BtnSend_Click"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Task Assistant" FontSize="14" Padding="10,5">
+                <Grid Margin="15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                        <TextBlock Text="Create New Cyber Task" FontSize="16" FontWeight="Bold" Foreground="#1F2937" Margin="0,0,0,15"/>
+
+                        <TextBlock Text="Task Title:" Margin="0,5,0,2" Foreground="#4B5563" FontWeight="SemiBold"/>
+                        <TextBox x:Name="TxtTaskTitle" Height="30" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Description:" Margin="0,5,0,2" Foreground="#4B5563" FontWeight="SemiBold"/>
+                        <TextBox x:Name="TxtTaskDesc" Height="60" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" BorderBrush="#D1D5DB" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Reminder (e.g., In 5 days):" Margin="0,5,0,2" Foreground="#4B5563" FontWeight="SemiBold"/>
+                        <TextBox x:Name="TxtTaskReminder" Height="30" VerticalContentAlignment="Center" BorderBrush="#D1D5DB" Margin="0,0,0,20"/>
+
+                        <Button x:Name="BtnAddTask" Content="Add Task" Height="35" Background="#2563EB" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnAddTask_Click"/>
+                    </StackPanel>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <DataGrid x:Name="DgdTasks" Grid.Row="0" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" GridLinesVisibility="Horizontal" BorderBrush="#D1D5DB" Background="White">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="40" />
+                                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="150" />
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="180" />
+                                <DataGridTextColumn Header="Reminder" Binding="{Binding Reminder}" Width="100" />
+                                <DataGridCheckBoxColumn Header="Done" Binding="{Binding IsComplete}" Width="50" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                            <Button x:Name="BtnMarkComplete" Content="Mark Complete" Width="130" Height="35" Background="#10B981" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,10,0" Click="BtnMarkComplete_Click"/>
+                            <Button x:Name="BtnDeleteTask" Content="Delete Task" Width="110" Height="35" Background="#EF4444" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnDeleteTask_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
