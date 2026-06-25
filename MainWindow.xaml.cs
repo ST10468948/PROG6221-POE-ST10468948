@@ -130,9 +130,9 @@ namespace ChatBotGui
             DgdTasks.ItemsSource = taskEngine.GetAllTasks();
         }
 
-        /// <summary>
-        /// Action handler triggered when the user clicks the "Add Task" button 
-                    /// </summary>
+        
+        // Action handler triggered when the user clicks the "Add Task" button 
+                    
         private void BtnAddTask_Click(object sender, RoutedEventArgs e)
         {
             // Gather structural literal inputs from the user entry components 
@@ -162,9 +162,9 @@ namespace ChatBotGui
             MessageBox.Show(successPrompt, "Operation Successful", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        /// <summary>
-        /// Action handler triggered when a task row is selected and completed 
-                    /// </summary>
+        
+        // Action handler triggered when a task row is selected and completed 
+                    
         private void BtnMarkComplete_Click(object sender, RoutedEventArgs e)
         {
             // Map the highlighted grid collection line onto a CyberTask layout model context 
