@@ -19,9 +19,7 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Margin="0,0,0,10">
-
                         <TextBlock Text="[ Awareness Assistant v2.0 ]" FontSize="18" Foreground="Cyan" HorizontalAlignment="Center" FontWeight="Bold"/>
-
                         <TextBlock x:Name="tbAsciiCanvas" FontFamily="Consolas" FontSize="8" Foreground="SkyBlue" HorizontalAlignment="Center" Margin="5"/>
                     </StackPanel>
 
@@ -87,6 +85,53 @@
                             <Button x:Name="BtnDeleteTask" Content="Delete Task" Width="110" Height="35" Background="#EF4444" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnDeleteTask_Click"/>
                         </StackPanel>
                     </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Cyber Quiz" FontSize="14" Padding="10,5">
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,15">
+                        <TextBlock Text="Cybersecurity Awareness Quiz" FontSize="18" FontWeight="Bold" Foreground="#1F2937" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
+                            <TextBlock Text="Score: " FontSize="14" FontWeight="SemiBold" Foreground="#4B5563"/>
+                            <TextBlock x:Name="LblLiveScore" Text="0/10" FontSize="14" FontWeight="Bold" Foreground="#2563EB"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <StackPanel x:Name="PnlQuizActive" Grid.Row="1">
+                        <TextBlock x:Name="TxtQuestionBox" Text="Question text will load right here..." FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" Foreground="#374151" Margin="0,0,0,15"/>
+
+                        <RadioButton x:Name="RadOptA" Content="Option A Text" FontSize="13" Margin="5,5,0,5" GroupName="QuizOptions"/>
+                        <RadioButton x:Name="RadOptB" Content="Option B Text" FontSize="13" Margin="5,5,0,5" GroupName="QuizOptions"/>
+                        <RadioButton x:Name="RadOptC" Content="Option C Text" FontSize="13" Margin="5,5,0,5" GroupName="QuizOptions"/>
+                        <RadioButton x:Name="RadOptD" Content="Option D Text" FontSize="13" Margin="5,5,0,20" GroupName="QuizOptions"/>
+
+                        <Button x:Name="BtnSubmitAnswer" Content="Submit Answer" Height="35" Width="140" HorizontalAlignment="Left" Background="#2563EB" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnSubmitAnswer_Click"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="PnlFeedback" Grid.Row="2" Margin="0,20,0,0" Visibility="Collapsed">
+                        <Border BorderThickness="1" CornerRadius="5" Padding="12" x:Name="BdrFeedbackStatus">
+                            <StackPanel>
+                                <TextBlock x:Name="TxtFeedbackStatus" Text="Correct / Incorrect Status" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                                <TextBlock x:Name="TxtExplanation" Text="Educational explanation text will display here..." FontSize="13" TextWrapping="Wrap" Foreground="#4B5563"/>
+                            </StackPanel>
+                        </Border>
+                        <Button x:Name="BtnNextQuestion" Content="Next Question" Height="35" Width="140" HorizontalAlignment="Left" Margin="0,15,0,0" Background="#10B981" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnNextQuestion_Click"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="PnlQuizResults" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40,0,0">
+                        <TextBlock Text="Quiz Completed!" FontSize="20" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                        <TextBlock x:Name="TxtFinalScoreReport" Text="You scored 0 out of 10" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="TxtFinalFeedbackMsg" Text="Great job message goes here!" FontSize="14" Foreground="#4B5563" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+                        <Button x:Name="BtnRestartQuiz" Content="Try Again" Height="35" Width="120" Background="#4B5563" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnRestartQuiz_Click"/>
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>
